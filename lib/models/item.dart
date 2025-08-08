@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Item {
-  const Item({
-    required this.id,
-    required this.text,
-    required this.completed,
-    required this.date,
-  });
+part 'item.freezed.dart';
+part 'item.g.dart';
 
-  final String id;
-  final String text;
-  final bool completed;
-  final DateTime date;
+@freezed
+class Item with _$Item {
+  const factory Item({
+    required String id,
+    required String text,
+    @Default(false) bool completed,
+    required DateTime date,
+  }) = _Item;
+
+  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
   factory Item.fromSnapshot(String id, Map<String, dynamic> document) {
     return Item(
