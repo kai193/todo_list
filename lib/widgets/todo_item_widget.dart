@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/item.dart';
 
 class TodoItemWidget extends StatefulWidget {
@@ -91,9 +92,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                 },
               )
             : Text(widget.item.text),
-        subtitle: Text(
-          widget.item.date.toString().replaceAll('-', '/').substring(0, 19),
-        ),
+        subtitle: Text(DateFormat('yyyy/MM/dd HH:mm').format(widget.item.date)),
         trailing: IconButton(
           icon: Icon(
             widget.item.completed

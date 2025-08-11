@@ -13,14 +13,24 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final TextEditingController textEditingController = TextEditingController();
+  String? _errorMessage;
 
   Future<void> _saveItem() async {
-    if (textEditingController.text.trim().isNotEmpty) {
-      await ref
-          .read(todoNotifierProvider.notifier)
-          .addItem(textEditingController.text);
-      textEditingController.clear();
+    if (textEditingController.text.trim().isEmpty) {
+      setState(() {
+        _errorMessage = '項目を入力してください';
+      });
+      return;
     }
+
+    setState(() {
+      _errorMessage = null;
+    });
+
+    await ref
+        .read(todoNotifierProvider.notifier)
+        .addItem(textEditingController.text);
+    textEditingController.clear();
   }
 
   @override
@@ -89,30 +99,53 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return ListView.builder(
       itemBuilder: (context, index) {
         if (index == 0) {
-          return ListTile(
-            title: TextField(
-              controller: textEditingController,
-              decoration: const InputDecoration(
-                hintText: 'TODOを入力してください',
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue),
+          return Column(
+            children: [
+              ListTile(
+                title: TextField(
+                  controller: textEditingController,
+                  decoration: const InputDecoration(
+                    hintText: 'TODOを入力してください',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    if (_errorMessage != null && value.trim().isNotEmpty) {
+                      setState(() {
+                        _errorMessage = null;
+                      });
+                    }
+                  },
+                  onSubmitted: (_) => _saveItem(),
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2),
+                trailing: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: IconButton(
+                    onPressed: _saveItem,
+                    icon: const Icon(Icons.add, color: Colors.white, size: 24),
+                  ),
                 ),
               ),
-              onSubmitted: (_) => _saveItem(),
-            ),
-            trailing: Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: IconButton(
-                onPressed: _saveItem,
-                icon: const Icon(Icons.add, color: Colors.white, size: 24),
-              ),
-            ),
+              if (_errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    bottom: 8.0,
+                  ),
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+                ),
+            ],
           );
         }
         final item = items[index - 1];

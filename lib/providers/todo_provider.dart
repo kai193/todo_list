@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:riverpod/riverpod.dart';
 import '../models/item.dart';
 import '../services/firebase_service.dart';
 
@@ -6,7 +7,7 @@ part 'todo_provider.g.dart';
 
 // FirebaseServiceのプロバイダー
 @riverpod
-FirebaseService firebaseService(FirebaseServiceRef ref) {
+FirebaseService firebaseService(Ref ref) {
   return FirebaseService();
 }
 
@@ -52,7 +53,7 @@ class TodoNotifier extends _$TodoNotifier {
         }).toList();
         state = AsyncValue.data(updatedItems);
       }
-    } catch (error, stackTrace) {
+    } catch (error, _) {
       // エラーが発生しても楽観的更新を維持
       print('Error saving item: $error');
     }
@@ -76,7 +77,7 @@ class TodoNotifier extends _$TodoNotifier {
     try {
       final firebaseService = ref.read(firebaseServiceProvider);
       await firebaseService.toggleComplete(item);
-    } catch (error, stackTrace) {
+    } catch (error, _) {
       // エラーが発生しても楽観的更新を維持
       print('Error toggling item: $error');
     }
@@ -95,7 +96,7 @@ class TodoNotifier extends _$TodoNotifier {
     try {
       final firebaseService = ref.read(firebaseServiceProvider);
       await firebaseService.deleteItem(id);
-    } catch (error, stackTrace) {
+    } catch (error, _) {
       // エラーが発生しても楽観的更新を維持
       print('Error deleting item: $error');
     }
@@ -121,7 +122,7 @@ class TodoNotifier extends _$TodoNotifier {
     try {
       final firebaseService = ref.read(firebaseServiceProvider);
       await firebaseService.updateItemText(id, newText);
-    } catch (error, stackTrace) {
+    } catch (error, _) {
       // エラーが発生しても楽観的更新を維持
       print('Error updating item text: $error');
     }
