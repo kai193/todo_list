@@ -6,29 +6,14 @@ part of 'todo_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$firebaseServiceHash() => r'70342238cf61992552fcea00d551eec41cdd16b4';
+String _$todoNotifierHash() => r'19b55842bc98912e3cdcfed9edcd3765bef227ee';
 
-/// See also [firebaseService].
-@ProviderFor(firebaseService)
-final firebaseServiceProvider = AutoDisposeProvider<FirebaseService>.internal(
-  firebaseService,
-  name: r'firebaseServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$firebaseServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef FirebaseServiceRef = AutoDisposeProviderRef<FirebaseService>;
-String _$todoNotifierHash() => r'9e6ae1bad695e815072eac9f44190a112d78ae6d';
-
-/// See also [TodoNotifier].
+/// TODOアイテムの状態を管理するプロバイダー（リアルタイム更新対応）
+///
+/// Copied from [TodoNotifier].
 @ProviderFor(TodoNotifier)
 final todoNotifierProvider =
-    AutoDisposeAsyncNotifierProvider<TodoNotifier, List<Item>>.internal(
+    AutoDisposeStreamNotifierProvider<TodoNotifier, List<Item>>.internal(
       TodoNotifier.new,
       name: r'todoNotifierProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -38,6 +23,28 @@ final todoNotifierProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$TodoNotifier = AutoDisposeAsyncNotifier<List<Item>>;
+typedef _$TodoNotifier = AutoDisposeStreamNotifier<List<Item>>;
+String _$todoNotifierWithOptimisticHash() =>
+    r'74626d207510a45993f1ecdb5cb4a587db15cab5';
+
+/// 楽観的更新が必要な場合のためのプロバイダー
+///
+/// Copied from [TodoNotifierWithOptimistic].
+@ProviderFor(TodoNotifierWithOptimistic)
+final todoNotifierWithOptimisticProvider =
+    AutoDisposeAsyncNotifierProvider<
+      TodoNotifierWithOptimistic,
+      List<Item>
+    >.internal(
+      TodoNotifierWithOptimistic.new,
+      name: r'todoNotifierWithOptimisticProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$todoNotifierWithOptimisticHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$TodoNotifierWithOptimistic = AutoDisposeAsyncNotifier<List<Item>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

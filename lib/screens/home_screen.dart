@@ -35,6 +35,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // リアルタイムでTODOアイテムを監視
     final todoAsync = ref.watch(todoNotifierProvider);
 
     return Scaffold(

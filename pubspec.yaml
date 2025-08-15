@@ -30,8 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.15.0
-  cloud_firestore: ^4.8.4
+  cloud_firestore: ^4.17.5  # 4.17.5以降の、メジャーバージョンが4の最新版を許可
+  firebase_core: ^2.32.0  
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -42,6 +42,7 @@ dependencies:
   # RiverPod for state management
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
+  riverpod: ^2.5.1
 
   # Date formatting
   intl: ^0.19.0

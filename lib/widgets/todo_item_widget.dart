@@ -118,12 +118,4 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
     });
     focusNode.unfocus();
   }
-
-  void _cancelEdit() {
-    textController.text = widget.item.text;
-    setState(() {
-      isEditing = false;
-    });
-    focusNode.unfocus();
-  }
 }
